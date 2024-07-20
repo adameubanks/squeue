@@ -2,17 +2,17 @@ require 'open3'
 
 class Command
   def to_s
-    "squeue"
+    "/opt/slurm/current/bin/squeue"
   end
 
-  AppProcess = Struct.new(:jobid, :partition, :name, :user, :st, :time, :nodes, :nodelist)
+  AppProcess = Struct.new(:nothing, :jobid, :partition, :name, :user, :st, :time, :nodes, :nodelist)
 
   def parse(output)
     lines = output.strip.split("\n")
     # Skip header lines
     lines = lines.drop(1)
     lines.map do |line|
-      fields = line.split(/\s{2,}/) # Split based on two or more spaces
+      fields = line.split(/\s{1,}/) # Split based on one or more spaces
       AppProcess.new(*fields)
     end
   end
