@@ -1,0 +1,45 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+</head>
+<body>  
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #53565a;">
+    <a class="navbar-brand" href="/pun/sys/dashboard/">UVA Open OnDemand</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </nav>
+  <div class="container">
+    <h1>Queue Status</h1>
+    Output generated: <%= Time.now %>
+    <pre>
+    $ qlist
+    </pre>
+    <table class="table table-bordered">
+      <tr>
+        <th>Job ID</th>
+        <th>Partition</th>
+        <th>Name</th>
+        <th>User</th>
+        <th>ST</th>
+        <th>Time</th>
+        <th>Nodes</th>
+        <th>Node List (Reason)</th>
+      </tr>
+      <% @processes.each do |app| %>
+      <tr>
+        <td><%= app.jobid %></td>
+        <td><%= app.partition %></td>
+        <td><%= app.name %></td>
+        <td><%= app.user %></td>
+        <td><%= app.st %></td>
+        <td><%= app.time %></td>
+        <td><%= app.nodes %></td>
+        <td><%= app.nodelist %></td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</body>
+</html>
