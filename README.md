@@ -7,7 +7,7 @@ This is a Sinatra application that displays information about jobs for Open OnDe
 
 1. Create a new Sandbox app
 
-2. Insert the repository link and name the app `ViewJobs`
+2. Insert the repository link and name the app `QueueJobs`
 
 3. Open the app to get a real-time display of storage use
 

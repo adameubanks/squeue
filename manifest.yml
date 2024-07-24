@@ -1,4 +1,4 @@
-name: View Jobs
+name: Queue Jobs
 description: View information about jobs located in the Slurm scheduling queue.
 icon: fas://list
 category: Files
