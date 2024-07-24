@@ -1,5 +1,5 @@
 ![UVA Research Computing Logo](https://learning.rc.virginia.edu/img/RC_logo.svg)
-# UVA Disk Usage App
+# UVA View Jobs App
 
 This is a Sinatra application that displays information about jobs for Open OnDemand at the University of Virginia, using Passenger as the application server.
 
@@ -7,7 +7,7 @@ This is a Sinatra application that displays information about jobs for Open OnDe
 
 1. Create a new Sandbox app
 
-2. Insert the repository link and name the app `squeue`
+2. Insert the repository link and name the app `ViewJobs`
 
 3. Open the app to get a real-time display of storage use
 
