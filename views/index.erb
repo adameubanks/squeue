@@ -1,9 +1,29 @@
+<!DOCTYPE html>
 <html>
 <head>
+  <title>Queue Jobs</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+  <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+  <style>
+    .navbar {
+      margin-bottom: 20px;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    .filter-label {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+      padding: 0.5em 1em;
+    }
+  </style>
 </head>
-<body>  
+<body>
   <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #53565a;">
     <a class="navbar-brand" href="/pun/sys/dashboard/">UVA Open OnDemand</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -12,34 +32,107 @@
   </nav>
   <div class="container">
     <h1>Queue Jobs</h1>
-    Output generated: <%= Time.now %>
+    <p>Output generated: <%= Time.now %></p>
     <pre>
     $ squeue
     </pre>
-    <table class="table table-bordered">
-      <tr>
-        <th>Job ID</th>
-        <th>Partition</th>
-        <th>Name</th>
-        <th>User</th>
-        <th>ST</th>
-        <th>Time</th>
-        <th>Nodes</th>
-        <th>Node List (Reason)</th>
-      </tr>
-      <% @processes.each do |app| %>
-      <tr>
-        <td><%= app.jobid %></td>
-        <td><%= app.partition %></td>
-        <td><%= app.name %></td>
-        <td><%= app.user %></td>
-        <td><%= app.st %></td>
-        <td><%= app.time %></td>
-        <td><%= app.nodes %></td>
-        <td><%= app.nodelist %></td>
-      </tr>
-      <% end %>
+    <!-- Filters for partition, user, and name -->
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <label for="partitionFilter" class="filter-label">Filter by Partition:</label>
+        <select id="partitionFilter" class="form-control">
+          <option value="">All</option>
+          <% @processes.map(&:partition).uniq.each do |partition| %>
+            <option value="<%= partition %>"><%= partition %></option>
+          <% end %>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="userFilter" class="filter-label">Filter by User:</label>
+        <select id="userFilter" class="form-control">
+          <option value="">All</option>
+          <% @processes.map(&:user).uniq.each do |user| %>
+            <option value="<%= user %>"><%= user %></option>
+          <% end %>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="nameFilter" class="filter-label">Filter by Name:</label>
+        <select id="nameFilter" class="form-control">
+          <option value="">All</option>
+          <% @processes.map(&:name).uniq.each do |name| %>
+            <option value="<%= name %>"><%= name %></option>
+          <% end %>
+        </select>
+      </div>
+    </div>
+    <table id="jobsTable" class="table table-striped table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th>Job ID</th>
+          <th>Partition</th>
+          <th>Name</th>
+          <th>User</th>
+          <th>ST</th>
+          <th>Time</th>
+          <th>Nodes</th>
+          <th>Node List (Reason)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @processes.each do |app| %>
+        <tr>
+          <td><%= app.jobid %></td>
+          <td><%= app.partition %></td>
+          <td><%= app.name %></td>
+          <td><%= app.user %></td>
+          <td><%= app.st %></td>
+          <td><%= app.time %></td>
+          <td><%= app.nodes %></td>
+          <td><%= app.nodelist %></td>
+        </tr>
+        <% end %>
+      </tbody>
     </table>
   </div>
+
+  <!-- Initialize DataTables and add filter functionality -->
+  <script>
+    $(document).ready(function() {
+      var table = $('#jobsTable').DataTable({
+        "order": [[1, "asc"]] // Default sort by the second column (Partition)
+      });
+
+      // Filter table based on partition selection
+      $('#partitionFilter').on('change', function() {
+        var selectedPartition = $(this).val();
+        if (selectedPartition) {
+          table.column(1).search('^' + selectedPartition + '$', true, false).draw();
+        } else {
+          table.column(1).search('').draw();
+        }
+      });
+
+      // Filter table based on user selection
+      $('#userFilter').on('change', function() {
+        var selectedUser = $(this).val();
+        if (selectedUser) {
+          table.column(3).search('^' + selectedUser + '$', true, false).draw();
+        } else {
+          table.column(3).search('').draw();
+        }
+      });
+
+      // Filter table based on name selection
+      $('#nameFilter').on('change', function() {
+        var selectedName = $(this).val();
+        if (selectedName) {
+          table.column(2).search('^' + selectedName + '$', true, false).draw();
+        } else {
+          table.column(2).search('').draw();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
