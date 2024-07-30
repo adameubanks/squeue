@@ -47,7 +47,7 @@
           <% end %>
         </select>
       </div>
-      <div class="col-md-4">
+      <!-- <div class="col-md-4">
         <label for="userFilter" class="filter-label">Filter by User:</label>
         <select id="userFilter" class="form-control">
           <option value="">All</option>
@@ -55,7 +55,7 @@
             <option value="<%= user %>"><%= user %></option>
           <% end %>
         </select>
-      </div>
+      </div> -->
       <div class="col-md-4">
         <label for="nameFilter" class="filter-label">Filter by Name:</label>
         <select id="nameFilter" class="form-control">
@@ -114,14 +114,14 @@
       });
 
       // Filter table based on user selection
-      $('#userFilter').on('change', function() {
-        var selectedUser = $(this).val();
-        if (selectedUser) {
-          table.column(3).search('^' + selectedUser + '$', true, false).draw();
-        } else {
-          table.column(3).search('').draw();
-        }
-      });
+      // $('#userFilter').on('change', function() {
+      //   var selectedUser = $(this).val();
+      //   if (selectedUser) {
+      //     table.column(3).search('^' + selectedUser + '$', true, false).draw();
+      //   } else {
+      //     table.column(3).search('').draw();
+      //   }
+      // });
 
       // Filter table based on name selection
       $('#nameFilter').on('change', function() {
